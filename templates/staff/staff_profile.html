@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- =====================================
+HEADER
+===================================== -->
+
+<div class="dashboard-header">
+
+    <div>
+
+        <h1>{{ staff.name }}</h1>
+
+        <p class="dashboard-subtitle">
+
+            {{ staff.designation }}
+
+        </p>
+
+    </div>
+
+    <div>
+
+        <a href="{% url 'salary_slip_pdf' staff.id %}" class="btn">
+
+            Download Salary Slip
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+KPI CARDS
+===================================== -->
+
+<div class="stats-grid">
+
+    <!-- SALARY -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon sales-icon">
+            ₹
+        </div>
+
+        <div>
+
+            <h3>Monthly Salary</h3>
+
+            <h2>
+                ₹ {{ staff.monthly_salary }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- ADVANCE -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon expense-icon">
+            ₹
+        </div>
+
+        <div>
+
+            <h3>Total Advance</h3>
+
+            <h2>
+                ₹ {{ staff.total_advance }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- FINAL SALARY -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon profit-icon">
+            ₹
+        </div>
+
+        <div>
+
+            <h3>Final Salary</h3>
+
+            <h2>
+                ₹ {{ staff.final_salary }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRESENT DAYS -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon pending-icon">
+            ✔
+        </div>
+
+        <div>
+
+            <h3>Present Days</h3>
+
+            <h2>
+                {{ total_present }}
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+ADVANCE HISTORY
+===================================== -->
+
+<div class="card" style="margin-bottom:30px;">
+
+    <div class="section-header">
+
+        <h2>Advance History</h2>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="expense-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Notes</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for advance in advances %}
+
+                <tr>
+
+                    <td>
+                        {{ advance.advance_date }}
+                    </td>
+
+                    <td>
+                        {{ advance.advance_type }}
+                    </td>
+
+                    <td style="color:#c1121f;">
+
+                        ₹ {{ advance.amount }}
+
+                    </td>
+
+                    <td>
+
+                        {{ advance.notes }}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="4" style="text-align:center;">
+
+                        No advance history found.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+ATTENDANCE HISTORY
+===================================== -->
+
+<div class="card">
+
+    <div class="section-header">
+
+        <h2>Attendance History</h2>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="expense-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in attendance %}
+
+                <tr>
+
+                    <td>
+                        {{ item.attendance_date }}
+                    </td>
+
+                    <td>
+
+                        {% if item.status == 'Present' %}
+
+                        <span class="badge success-badge">
+
+                            Present
+
+                        </span>
+
+                        {% elif item.status == 'Absent' %}
+
+                        <span class="badge danger-badge">
+
+                            Absent
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge pending-badge">
+
+                            {{ item.status }}
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {{ item.notes }}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="3" style="text-align:center;">
+
+                        No attendance records found.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

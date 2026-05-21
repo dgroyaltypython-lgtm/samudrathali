@@ -1,0 +1,424 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- =====================================
+HEADER
+===================================== -->
+
+<div class="dashboard-header">
+
+    <div>
+
+        <h1>Staff Payroll Dashboard</h1>
+
+        <p class="dashboard-subtitle">
+            Staff salary, attendance & advance analytics
+        </p>
+
+    </div>
+
+    <div>
+
+        <a href="{% url 'export_staff_excel' %}" class="btn">
+
+            Export Payroll Excel
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+KPI CARDS
+===================================== -->
+
+<div class="stats-grid">
+
+    <!-- TOTAL STAFF -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon pending-icon">
+            👥
+        </div>
+
+        <div>
+
+            <h3>Total Staff</h3>
+
+            <h2>{{ total_staff }}</h2>
+
+            <p>
+                Active employee records
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOTAL SALARY -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon sales-icon">
+            ₹
+        </div>
+
+        <div>
+
+            <h3>Total Salary</h3>
+
+            <h2>
+                ₹ {{ total_salary }}
+            </h2>
+
+            <p class="positive-text">
+                Monthly payroll liability
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOTAL ADVANCE -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon expense-icon">
+            ₹
+        </div>
+
+        <div>
+
+            <h3>Total Advance</h3>
+
+            <h2>
+                ₹ {{ total_advance }}
+            </h2>
+
+            <p class="negative-text">
+                Salary deductions
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- REMAINING -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon profit-icon">
+            ₹
+        </div>
+
+        <div>
+
+            <h3>Remaining Salary</h3>
+
+            <h2>
+                ₹ {{ remaining_balance }}
+            </h2>
+
+            <p class="positive-text">
+                Pending payout balance
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+STAFF TABLE
+===================================== -->
+
+<div class="card">
+
+    <div class="section-header">
+
+        <h2>Staff Payroll Records</h2>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="expense-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Staff</th>
+                    <th>Designation</th>
+                    <th>Salary</th>
+                    <th>Advance</th>
+                    <th>Final Salary</th>
+                    <th>Attendance</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for staff in staffs %}
+
+                <tr>
+
+                    <!-- NAME -->
+
+                    <td>
+
+                        <div style="
+                            display:flex;
+                            align-items:center;
+                            gap:12px;
+                        ">
+
+                            <div style="
+                                width:45px;
+                                height:45px;
+                                border-radius:50%;
+                                background:#c1121f;
+                                color:white;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                font-weight:700;
+                            ">
+
+                                {{ staff.name|slice:":1" }}
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    {{ staff.name }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- DESIGNATION -->
+
+                    <td>
+
+                        {{ staff.designation }}
+
+                    </td>
+
+
+                    <!-- SALARY -->
+
+                    <td>
+
+                        ₹ {{ staff.monthly_salary }}
+
+                    </td>
+
+
+                    <!-- ADVANCE -->
+
+                    <td style="color:#c1121f;">
+
+                        ₹ {{ staff.total_advance }}
+
+                    </td>
+
+
+                    <!-- FINAL SALARY -->
+
+                    <td style="
+                        color:green;
+                        font-weight:600;
+                    ">
+
+                        ₹ {{ staff.final_salary }}
+
+                    </td>
+
+
+                    <!-- ATTENDANCE -->
+
+                    <td>
+
+                        <span class="badge pending-badge">
+
+                            Present:
+                            {{ staff.present_days }}
+
+                        </span>
+
+                    </td>
+
+
+                    <!-- STATUS -->
+
+                    <td>
+
+                        {% if staff.is_active %}
+
+                        <span class="badge success-badge">
+                            Active
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge danger-badge">
+                            Inactive
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- ACTION -->
+
+                    <td>
+
+                        <a href="{% url 'staff_profile' staff.id %}" class="quick-btn" style="
+                                padding:10px 16px;
+                                font-size:14px;
+                           ">
+
+                            View
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="8" style="
+                            text-align:center;
+                            padding:40px;
+                        ">
+
+                        No staff records found.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+BOTTOM SECTION
+===================================== -->
+
+<div class="dashboard-grid" style="margin-top:30px;">
+
+    <!-- PAYROLL SUMMARY -->
+
+    <div class="card">
+
+        <div class="section-header">
+
+            <h2>Payroll Summary</h2>
+
+        </div>
+
+        <div class="alert-grid">
+
+            <div class="alert-box">
+
+                <h3>Total Payroll</h3>
+
+                <p>
+                    ₹ {{ total_salary }}
+                </p>
+
+            </div>
+
+            <div class="alert-box">
+
+                <h3>Advance Deduction</h3>
+
+                <p>
+                    ₹ {{ total_advance }}
+                </p>
+
+            </div>
+
+            <div class="alert-box">
+
+                <h3>Net Payroll</h3>
+
+                <p>
+                    ₹ {{ remaining_balance }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="card quick-card">
+
+        <h2 style="margin-bottom:25px;">
+
+            Quick Actions
+
+        </h2>
+
+        <div class="quick-actions">
+
+            <a href="/admin/staff/staff/add/" class="quick-btn">
+
+                + Add Staff
+
+            </a>
+
+            <a href="/admin/staff/salaryadvance/add/" class="quick-btn">
+
+                + Add Advance
+
+            </a>
+
+            <a href="/admin/staff/attendance/add/" class="quick-btn">
+
+                + Mark Attendance
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

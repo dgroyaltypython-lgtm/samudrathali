@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 style="margin-bottom:20px;">
+    Sales Management
+</h1>
+
+<!-- ============================= -->
+<!-- IMPORT EXPORT SECTION -->
+<!-- ============================= -->
+
+<div class="card" style="margin-bottom:25px;">
+
+    <div class="import-export-container">
+
+        <a href="{% url 'export_sales_csv' %}" class="btn">
+
+            Export CSV
+
+        </a>
+
+        <form method="POST" enctype="multipart/form-data" action="{% url 'import_sales_csv' %}" class="import-form">
+
+            {% csrf_token %}
+
+            <input type="file" name="csv_file" class="file-input" required>
+
+            <button type="submit" class="btn">
+
+                Import CSV
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        margin-bottom:20px;
+        flex-wrap:wrap;
+        gap:10px;
+    ">
+
+        <h2>
+            Total Sales:
+            ₹ {{ total_sales }}
+        </h2>
+
+        <a href="{% url 'add_sale' %}" class="btn">
+
+            + Add Sale
+
+        </a>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="expense-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+                    <th>Payment Type</th>
+                    <th>Total Amount</th>
+                    <th>Notes</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for sale in sales %}
+
+                <tr>
+
+                    <td>{{ sale.sale_date }}</td>
+
+                    <td>{{ sale.payment_type }}</td>
+
+                    <td>₹ {{ sale.total_amount }}</td>
+
+                    <td>{{ sale.notes }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

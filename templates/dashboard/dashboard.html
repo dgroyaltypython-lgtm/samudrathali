@@ -1,0 +1,712 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- ===================================== -->
+<!-- DASHBOARD HEADER -->
+<!-- ===================================== -->
+
+<div class="dashboard-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Samudra Thali Restaurant ERP Dashboard
+        </h1>
+
+        <p class="dashboard-subtitle">
+
+            Complete restaurant management overview
+            with sales, expenses, inventory, staff
+            and management fund analytics
+
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- KPI CARDS -->
+<!-- ===================================== -->
+
+<div class="stats-grid">
+
+    <!-- SALES -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon sales-icon">
+            ₹
+        </div>
+
+        <div>
+
+            <h3>
+                Total Sales
+            </h3>
+
+            <h2>
+                ₹ {{ total_sales }}
+            </h2>
+
+            <p class="positive-text">
+                Business revenue overview
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- EXPENSE -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon expense-icon">
+            ₹
+        </div>
+
+        <div>
+
+            <h3>
+                Total Expenses
+            </h3>
+
+            <h2>
+                ₹ {{ total_expense }}
+            </h2>
+
+            <p class="negative-text">
+                Operational expenses tracked
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- PROFIT -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon profit-icon">
+            ₹
+        </div>
+
+        <div>
+
+            <h3>
+                Net Profit
+            </h3>
+
+            <h2>
+                ₹ {{ net_profit }}
+            </h2>
+
+            <p class="positive-text">
+                Current business profitability
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- STAFF -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon pending-icon">
+            👨‍🍳
+        </div>
+
+        <div>
+
+            <h3>
+                Active Staff
+            </h3>
+
+            <h2>
+                {{ total_staff }}
+            </h2>
+
+            <p>
+                Staff currently active
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- INVENTORY -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon sales-icon">
+            📦
+        </div>
+
+        <div>
+
+            <h3>
+                Inventory Items
+            </h3>
+
+            <h2>
+                {{ total_inventory_items }}
+            </h2>
+
+            <p>
+                Total inventory products
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- LOW STOCK -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon expense-icon">
+            ⚠
+        </div>
+
+        <div>
+
+            <h3>
+                Low Stock Alerts
+            </h3>
+
+            <h2>
+                {{ low_stock_count }}
+            </h2>
+
+            <p class="negative-text">
+                Inventory needs refill
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- MANAGEMENT FUNDS -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon profit-icon">
+            💼
+        </div>
+
+        <div>
+
+            <h3>
+                Management Borrowings
+            </h3>
+
+            <h2>
+                ₹ {{ total_management_borrowings }}
+            </h2>
+
+            <p>
+                Management fund usage
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- PENDING EXPENSE -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon pending-icon">
+            ⏳
+        </div>
+
+        <div>
+
+            <h3>
+                Pending Expenses
+            </h3>
+
+            <h2>
+                ₹ {{ pending_expense_amount }}
+            </h2>
+
+            <p>
+                Pending payment expenses
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- MAIN GRID -->
+<!-- ===================================== -->
+
+<div class="dashboard-grid">
+
+
+    <!-- ================================= -->
+    <!-- RECENT TRANSACTIONS -->
+    <!-- ================================= -->
+
+    <div class="card">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Recent Transactions
+                </h2>
+
+                <p class="section-subtitle">
+
+                    Latest business activity overview
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="expense-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Details</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <!-- RECENT SALES -->
+
+                    {% for sale in recent_sales %}
+
+                    <tr>
+
+                        <td>
+                            {{ sale.sale_date }}
+                        </td>
+
+                        <td>
+
+                            <span class="badge success-badge">
+
+                                Sale
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {{ sale.customer_name }}
+
+                        </td>
+
+                        <td class="amount-cell">
+
+                            ₹ {{ sale.total_amount }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge success-badge">
+
+                                Completed
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+
+                    <!-- RECENT EXPENSES -->
+
+                    {% for expense in recent_expenses %}
+
+                    <tr>
+
+                        <td>
+                            {{ expense.expense_date }}
+                        </td>
+
+                        <td>
+
+                            <span class="badge pending-badge">
+
+                                Expense
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {{ expense.title }}
+
+                        </td>
+
+                        <td class="amount-cell">
+
+                            ₹ {{ expense.amount }}
+
+                        </td>
+
+                        <td>
+
+                            {% if expense.payment_status == 'Paid' %}
+
+                            <span class="badge success-badge">
+
+                                Paid
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge danger-badge">
+
+                                Pending
+
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                    <!-- MANAGEMENT FUNDS -->
+
+                    {% for fund in recent_management_funds %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ fund.transaction_date }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge danger-badge">
+
+                                Management
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {{ fund.title }}
+
+                        </td>
+
+                        <td class="amount-cell">
+
+                            ₹ {{ fund.amount }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge pending-badge">
+
+                                Borrowed
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- QUICK ACTIONS -->
+    <!-- ================================= -->
+
+    <div class="card quick-card">
+
+        <h2 style="margin-bottom:25px;">
+
+            Quick Actions
+
+        </h2>
+
+
+        <div class="quick-actions">
+
+            <a href="{% url 'add_sale' %}" class="quick-btn">
+
+                + Add Sale
+
+            </a>
+
+
+            <a href="{% url 'add_expense' %}" class="quick-btn">
+
+                + Add Expense
+
+            </a>
+
+
+            <a href="{% url 'add_purchase_request' %}" class="quick-btn">
+
+                + Inventory Request
+
+            </a>
+
+
+            <a href="{% url 'staff_dashboard' %}" class="quick-btn">
+
+                + Staff Dashboard
+
+            </a>
+
+
+            <a href="{% url 'management_fund_dashboard' %}" class="quick-btn">
+
+                + Management Funds
+
+            </a>
+
+
+            <a href="/admin/" class="quick-btn">
+
+                + Admin Panel
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- LOW STOCK ALERTS -->
+<!-- ===================================== -->
+
+<div class="card" style="margin-top:30px;">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Low Stock Alerts
+            </h2>
+
+            <p class="section-subtitle">
+
+                Inventory items requiring immediate refill
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="alert-grid">
+
+        {% for item in low_stock_items %}
+
+        <div class="alert-box">
+
+            <h3>
+
+                {{ item.item_name }}
+
+            </h3>
+
+            <p>
+
+                Remaining Stock:
+                <strong>
+
+                    {{ item.current_stock }}
+
+                </strong>
+
+            </p>
+
+        </div>
+
+        {% empty %}
+
+        <div class="alert-box">
+
+            <h3>
+
+                Excellent Inventory Status
+
+            </h3>
+
+            <p>
+
+                No low stock alerts currently.
+
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- STAFF SALARY SECTION -->
+<!-- ===================================== -->
+
+<div class="card" style="margin-top:30px;">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Staff Salary Overview
+            </h2>
+
+            <p class="section-subtitle">
+
+                Salary, attendance and overtime analytics
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="expense-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Staff</th>
+                    <th>Designation</th>
+                    <th>Monthly Salary</th>
+                    <th>Advance</th>
+                    <th>Overtime</th>
+                    <th>Final Salary</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for staff in staff_salary_data %}
+
+                <tr>
+
+                    <td>
+
+                        {{ staff.name }}
+
+                    </td>
+
+                    <td>
+
+                        {{ staff.designation }}
+
+                    </td>
+
+                    <td>
+
+                        ₹ {{ staff.monthly_salary }}
+
+                    </td>
+
+                    <td>
+
+                        ₹ {{ staff.total_advance }}
+
+                    </td>
+
+                    <td>
+
+                        ₹ {{ staff.total_overtime_amount }}
+
+                    </td>
+
+                    <td class="amount-cell">
+
+                        ₹ {{ staff.final_salary }}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

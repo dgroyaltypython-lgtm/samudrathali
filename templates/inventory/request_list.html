@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 style="margin-bottom:20px;">
+    Inventory Purchase Requests
+</h1>
+
+<div class="card">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;
+        flex-wrap:wrap;
+        gap:10px;
+    ">
+
+        <h2>
+            Request List
+        </h2>
+
+        <a href="{% url 'add_purchase_request' %}" class="btn">
+
+            + Add Request
+
+        </a>
+
+    </div>
+    <!-- ============================= -->
+    <!-- IMPORT EXPORT SECTION -->
+    <!-- ============================= -->
+
+    <div class="card" style="margin-bottom:25px;">
+
+        <div class="import-export-container">
+
+            <a href="{% url 'export_inventory_csv' %}" class="btn">
+
+                Export CSV
+
+            </a>
+
+            <form method="POST" enctype="multipart/form-data" action="{% url 'import_inventory_csv' %}"
+                class="import-form">
+
+                {% csrf_token %}
+
+                <input type="file" name="csv_file" class="file-input" required>
+
+                <button type="submit" class="btn">
+
+                    Import CSV
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="expense-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Request Date</th>
+                    <th>Notes</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for request in requests %}
+
+                <tr>
+
+                    <td>
+                        {{ request.item }}
+                    </td>
+
+                    <td>
+                        {{ request.quantity }}
+                    </td>
+
+                    <td>
+
+                        {% if request.status == 'Approved' %}
+
+                        <span style="
+                                color:green;
+                                font-weight:600;
+                            ">
+                            {{ request.status }}
+                        </span>
+
+                        {% elif request.status == 'Rejected' %}
+
+                        <span style="
+                                color:red;
+                                font-weight:600;
+                            ">
+                            {{ request.status }}
+                        </span>
+
+                        {% else %}
+
+                        <span style="
+                                color:#c1121f;
+                                font-weight:600;
+                            ">
+                            {{ request.status }}
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ request.request_date }}
+                    </td>
+
+                    <td>
+                        {{ request.notes }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5" style="text-align:center;">
+
+                        No purchase requests found.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

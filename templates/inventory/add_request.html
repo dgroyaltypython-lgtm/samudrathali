@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 style="margin-bottom:20px;">
+    Add Purchase Request
+</h1>
+
+<div class="card form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit" class="btn">
+
+            Save Request
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- ============================= -->
+<!-- PAGE HEADER -->
+<!-- ============================= -->
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Expense Management
+        </h1>
+
+        <p class="page-subtitle">
+            Track, monitor and manage restaurant expenses professionally
+        </p>
+
+    </div>
+
+    <div class="header-actions">
+
+        <a href="{% url 'add_expense' %}" class="btn btn-success">
+
+            + Add Expense
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- ANALYTICS CARDS -->
+<!-- ============================= -->
+
+<div class="stats-grid">
+
+    <!-- TOTAL EXPENSE -->
+
+    <div class="stat-card">
+
+        <div class="stat-top">
+
+            <div class="stat-icon expense-icon">
+                ₹
+            </div>
+
+            <div>
+
+                <h3>
+                    Total Expenses
+                </h3>
+
+                <h2>
+                    ₹ {{ total_expense }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOTAL RECORDS -->
+
+    <div class="stat-card">
+
+        <div class="stat-top">
+
+            <div class="stat-icon sales-icon">
+                #
+            </div>
+
+            <div>
+
+                <h3>
+                    Total Records
+                </h3>
+
+                <h2>
+                    {{ expenses.count }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- IMPORT EXPORT SECTION -->
+<!-- ============================= -->
+
+<div class="card import-export-card">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Import / Export
+            </h2>
+
+            <p class="section-subtitle">
+                Backup or upload expense records quickly
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="import-export-container">
+
+        <!-- EXPORT -->
+
+        <a href="{% url 'export_expenses_csv' %}" class="btn btn-primary">
+
+            Export CSV
+
+        </a>
+
+
+        <!-- IMPORT -->
+
+        <form method="POST" enctype="multipart/form-data" action="{% url 'import_expenses_csv' %}" class="import-form">
+
+            {% csrf_token %}
+
+            <input type="file" name="csv_file" required class="file-input">
+
+            <button type="submit" class="btn btn-success">
+
+                Import CSV
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- EXPENSE TABLE -->
+<!-- ============================= -->
+
+<div class="card table-card">
+
+    <div class="table-header">
+
+        <div>
+
+            <h2>
+                Expense Records
+            </h2>
+
+            <p class="section-subtitle">
+                Complete list of all expense transactions
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="expense-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Payment Method</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for expense in expenses %}
+
+                <tr>
+
+                    <!-- DATE -->
+
+                    <td>
+
+                        {{ expense.expense_date }}
+
+                    </td>
+
+
+                    <!-- TITLE -->
+
+                    <td>
+
+                        <strong>
+                            {{ expense.title }}
+                        </strong>
+
+                    </td>
+
+
+                    <!-- CATEGORY -->
+
+                    <td>
+
+                        {{ expense.category }}
+
+                    </td>
+
+
+                    <!-- AMOUNT -->
+
+                    <td class="amount-cell">
+
+                        ₹ {{ expense.amount }}
+
+                    </td>
+
+
+                    <!-- STATUS -->
+
+                    <td>
+
+                        {% if expense.payment_status == 'Paid' %}
+
+                        <span class="badge success-badge">
+
+                            Paid
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge pending-badge">
+
+                            Pending
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- PAYMENT METHOD -->
+
+                    <td>
+
+                        {% if expense.payment_method %}
+
+                        {{ expense.payment_method }}
+
+                        {% else %}
+
+                        -
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6" style="text-align:center;
+                               padding:40px;">
+
+                        No expense records found.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

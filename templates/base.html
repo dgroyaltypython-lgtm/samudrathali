@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        COASTAL PEARL ERP
+    </title>
+
+    <!-- GOOGLE FONT -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- MAIN CSS -->
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+    <!-- ====================================== -->
+    <!-- FULL PAGE WRAPPER -->
+    <!-- ====================================== -->
+
+    <div class="erp-wrapper">
+
+        <!-- ====================================== -->
+        <!-- SEA BACKGROUND OVERLAY -->
+        <!-- ====================================== -->
+
+        <div class="background-overlay"></div>
+
+        <!-- ====================================== -->
+        <!-- MOBILE TOPBAR -->
+        <!-- ====================================== -->
+
+        {% if request.user.is_authenticated %}
+
+        <div class="mobile-topbar">
+
+            <button id="menu-btn">
+                ☰
+            </button>
+
+            <h2>
+                SAMUDRA THALI ERP
+            </h2>
+
+        </div>
+
+        {% endif %}
+
+        <!-- ====================================== -->
+        <!-- LOGIN PAGE -->
+        <!-- ====================================== -->
+
+        {% if not request.user.is_authenticated %}
+
+        <div class="login-page">
+
+            <div class="login-card">
+
+                <div class="login-logo">
+
+                    <h1>
+                        GROUP OF BBN COASTAL PEARL
+                    </h1>
+
+                    <h2>
+                        Samudra Thali Restaurant ERP
+                    </h2>
+
+                    <p>
+                        Coastal Hospitality • Restaurant Management • ERP System
+                    </p>
+
+                </div>
+
+                <form method="POST" action="{% url 'login' %}" class="login-form">
+
+                    {% csrf_token %}
+
+                    <div class="form-group">
+
+                        <label>
+                            Username
+                        </label>
+
+                        <input type="text" name="username" placeholder="Enter username" required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <input type="password" name="password" placeholder="Enter password" required>
+
+                    </div>
+
+                    <button type="submit" class="login-btn">
+
+                        Login to ERP
+
+                    </button>
+
+                </form>
+
+                <div class="login-footer">
+
+                    Authorized Access Only
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <!-- ====================================== -->
+        <!-- ERP LAYOUT -->
+        <!-- ====================================== -->
+
+        <div class="layout">
+
+            <!-- ====================================== -->
+            <!-- SIDEBAR -->
+            <!-- ====================================== -->
+
+            <aside class="sidebar" id="sidebar">
+
+                <!-- ====================================== -->
+                <!-- LOGO -->
+                <!-- ====================================== -->
+
+                <div class="logo-area">
+
+                    <h2>
+                        COASTAL PEARL ERP
+                    </h2>
+
+                    <p class="sidebar-subtitle">
+
+                        Samudra Thali Restaurant
+
+                    </p>
+
+                </div>
+
+                <!-- ====================================== -->
+                <!-- USER INFO -->
+                <!-- ====================================== -->
+
+                <div class="user-info">
+
+                    <div class="user-avatar">
+
+                        {{ request.user.username|first|upper }}
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            {{ request.user.username }}
+                        </h4>
+
+                        <p>
+                            Authorized User
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- ====================================== -->
+                <!-- SIDEBAR CONTENT -->
+                <!-- ====================================== -->
+
+                <div class="sidebar-content">
+
+                    <nav>
+
+                        <a href="{% url 'dashboard' %}">
+                            Dashboard
+                        </a>
+
+                        <a href="{% url 'expense_list' %}">
+                            Expenses
+                        </a>
+
+                        <a href="{% url 'sales_list' %}">
+                            Sales
+                        </a>
+
+                        <a href="{% url 'inventory_list' %}">
+                            Inventory
+                        </a>
+
+                        <a href="{% url 'staff_dashboard' %}">
+                            Staff
+                        </a>
+
+                        <a href="{% url 'management_fund_dashboard' %}">
+                            Management Funds
+                        </a>
+
+                    </nav>
+
+                </div>
+
+                <!-- ====================================== -->
+                <!-- SIDEBAR FOOTER -->
+                <!-- ====================================== -->
+
+                <div class="sidebar-footer">
+
+                    <form method="POST" action="{% url 'logout' %}">
+
+                        {% csrf_token %}
+
+                        <button type="submit" class="logout-btn">
+
+                            <span class="logout-icon">
+                                ⎋
+                            </span>
+
+                            <span>
+                                Logout
+                            </span>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </aside>
+
+            <!-- ====================================== -->
+            <!-- MAIN CONTENT -->
+            <!-- ====================================== -->
+
+            <main class="main-content">
+
+                {% block content %}
+                {% endblock %}
+
+            </main>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- ====================================== -->
+    <!-- JS -->
+    <!-- ====================================== -->
+
+    <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="dashboard-header">
+
+    <h1>
+        Management Fund Dashboard
+    </h1>
+
+</div>
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <h3>Total Used</h3>
+
+        <h2>
+            ₹ {{ total_used }}
+        </h2>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h3>Total Returned</h3>
+
+        <h2>
+            ₹ {{ total_returned }}
+        </h2>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h3>Pending Balance</h3>
+
+        <h2>
+            ₹ {{ total_pending }}
+        </h2>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <h2 style="margin-bottom:20px;">
+        Management Fund Records
+    </h2>
+
+    <div class="table-responsive">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Person</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Returned</th>
+                    <th>Pending</th>
+                    <th>Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for fund in funds %}
+
+                <tr>
+
+                    <td>
+                        {{ fund.person_name }}
+                    </td>
+
+                    <td>
+                        {{ fund.category }}
+                    </td>
+
+                    <td>
+                        ₹ {{ fund.amount }}
+                    </td>
+
+                    <td>
+                        ₹ {{ fund.total_returned }}
+                    </td>
+
+                    <td>
+                        ₹ {{ fund.pending_balance }}
+                    </td>
+
+                    <td>
+                        {{ fund.used_date }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
